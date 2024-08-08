@@ -1,36 +1,27 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# A26 Forms & Actions
 
-## Getting Started
+## Goal
 
-First, run the development server:
+- 잘 기억이 나지 않는 흐흑
+- form을 만들고
+- server action으로 검증?
+  - 비밀번호가 12345 면 통과 아니면 에러
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+# A27 Zexy Zod
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Goal
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- zod로 로그인 검증!
+- 이메일은 @zod.com 로 끝나야 하고
+- 유저명은 5글자 이상에
+- 비밀번호는 10글자 이상에 반드시 숫자 1개 이상 포함되어 있어야 한다
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+# A28 Prisma
 
-## Learn More
+## Goal
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+- SQLite로 프리즈마를 초기화하고 유저, 트윗, 좋아요 모델을 생성합니다.
+- User 모델에는 username, password, email, bio, created_at updated_at 필드가 있어야 합니다.
+- Tweet 모델에는 tweet, created_at 및 updated_at 필드가 있어야 합니다. 또한 User 와의 관계가 있어야 합니다.
+- Like 모델에는 created_at 필드가 있어야 하며 User 및 Tweet과의 관계가 있어야 합니다.
+- 모든 모델에는 primary key 가 있어야 합니다.
