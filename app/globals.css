@@ -1,3 +1,14 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+	* {
+		@apply box-border;
+	}
+}
+@layer components {
+	.btn {
+		@apply w-full p-3 rounded-3xl mt-3 bg-blue-950 text-white font-medium hover:bg-green-500 transition disabled:bg-neutral-400 disabled:text-neutral-100;
+	}
+}

@@ -24,4 +24,4 @@
 - User 모델에는 username, password, email, bio, created_at updated_at 필드가 있어야 합니다.
 - Tweet 모델에는 tweet, created_at 및 updated_at 필드가 있어야 합니다. 또한 User 와의 관계가 있어야 합니다.
 - Like 모델에는 created_at 필드가 있어야 하며 User 및 Tweet과의 관계가 있어야 합니다.
-- 모든 모델에는 primary key 가 있어야 합니다.
+- 모든 모델에는 primary key 가 있어야 합니다. === 모든 모델은 unique한 id가 있어야 함
