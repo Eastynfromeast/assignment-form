@@ -25,3 +25,13 @@
 - Tweet 모델에는 tweet, created_at 및 updated_at 필드가 있어야 합니다. 또한 User 와의 관계가 있어야 합니다.
 - Like 모델에는 created_at 필드가 있어야 하며 User 및 Tweet과의 관계가 있어야 합니다.
 - 모든 모델에는 primary key 가 있어야 합니다. === 모든 모델은 unique한 id가 있어야 함
+
+# A29 Authentication
+
+## Goal
+
+- Zod, 서버 액션, 미들웨어, 테일윈드, 프리즈마, iron-session 및 bcrypt를 사용하여 유저 인증을 구현합니다.
+- 3가지 페이지를 구현합니다: /create-account, /log-in, /profile.
+- /create-account 및 /log-in양식은 Zod를 사용하여 유효성을 검사하고 오류를 표시해야 합니다.
+- 유저는 로그인한 후에만 /profile을 볼 수 있어야 합니다.
+- /profile 페이지에는 유저 프로필이 표시되어야 합니다.

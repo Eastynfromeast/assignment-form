@@ -1,37 +1,24 @@
+import { InputHTMLAttributes } from "react";
+
 interface FormInputProps {
-	type: string;
 	name: string;
-	placeholder: string;
-	required: boolean;
-	errors: string[];
+	errors?: string[];
+	icon?: string;
 }
 
-export default function FormInput({ type, name, placeholder, required, errors }: FormInputProps) {
+export default function FormInput({ name, errors = [], icon, ...rest }: FormInputProps & InputHTMLAttributes<HTMLInputElement>) {
 	return (
 		<div className="flex flex-col gap-2 text-sm">
 			<div className="w-full relative">
 				<span className="size-4 block absolute top-1/2 -translate-y-1/2 left-4 text-gray-400 ">
-					{name === "email" && (
-						<svg className="w-full fill-current" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-							<path d="M1.5 8.67v8.58a3 3 0 0 0 3 3h15a3 3 0 0 0 3-3V8.67l-8.928 5.493a3 3 0 0 1-3.144 0L1.5 8.67Z" />
-							<path d="M22.5 6.908V6.75a3 3 0 0 0-3-3h-15a3 3 0 0 0-3 3v.158l9.714 5.978a1.5 1.5 0 0 0 1.572 0L22.5 6.908Z" />
-						</svg>
-					)}
-					{name === "username" && (
-						<svg className="w-full fill-current" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-							<path
-								strokeLinecap="round"
-								strokeLinejoin="round"
-								d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z"
-							/>
-						</svg>
-					)}
-					{name === "password" && (
+					{icon ? (
+						icon
+					) : (
 						<svg className="w-full fill-current" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
 							<path
 								clipRule="evenodd"
 								fillRule="evenodd"
-								d="M12 1.5a5.25 5.25 0 0 0-5.25 5.25v3a3 3 0 0 0-3 3v6.75a3 3 0 0 0 3 3h10.5a3 3 0 0 0 3-3v-6.75a3 3 0 0 0-3-3v-3c0-2.9-2.35-5.25-5.25-5.25Zm3.75 8.25v-3a3.75 3.75 0 1 0-7.5 0v3h7.5Z"
+								d="M9 4.5a.75.75 0 0 1 .721.544l.813 2.846a3.75 3.75 0 0 0 2.576 2.576l2.846.813a.75.75 0 0 1 0 1.442l-2.846.813a3.75 3.75 0 0 0-2.576 2.576l-.813 2.846a.75.75 0 0 1-1.442 0l-.813-2.846a3.75 3.75 0 0 0-2.576-2.576l-2.846-.813a.75.75 0 0 1 0-1.442l2.846-.813A3.75 3.75 0 0 0 7.466 7.89l.813-2.846A.75.75 0 0 1 9 4.5ZM18 1.5a.75.75 0 0 1 .728.568l.258 1.036c.236.94.97 1.674 1.91 1.91l1.036.258a.75.75 0 0 1 0 1.456l-1.036.258c-.94.236-1.674.97-1.91 1.91l-.258 1.036a.75.75 0 0 1-1.456 0l-.258-1.036a2.625 2.625 0 0 0-1.91-1.91l-1.036-.258a.75.75 0 0 1 0-1.456l1.036-.258a2.625 2.625 0 0 0 1.91-1.91l.258-1.036A.75.75 0 0 1 18 1.5ZM16.5 15a.75.75 0 0 1 .712.513l.394 1.183c.15.447.5.799.948.948l1.183.395a.75.75 0 0 1 0 1.422l-1.183.395c-.447.15-.799.5-.948.948l-.395 1.183a.75.75 0 0 1-1.422 0l-.395-1.183a1.5 1.5 0 0 0-.948-.948l-1.183-.395a.75.75 0 0 1 0-1.422l1.183-.395c.447-.15.799-.5.948-.948l.395-1.183A.75.75 0 0 1 16.5 15Z"
 							/>
 						</svg>
 					)}
@@ -39,9 +26,7 @@ export default function FormInput({ type, name, placeholder, required, errors }:
 				<input
 					className="py-3 pr-3 pl-10 w-full rounded-3xl outline-none ring ring-transparent bg-white focus:ring-orange-500 focus:outline-orange-300 invalid:ring-red-400 empty:ring-gray-300 empty:ring-1"
 					name={name}
-					type={type}
-					placeholder={placeholder}
-					required={required}
+					{...rest}
 				/>
 			</div>
 			{errors?.map((error, index) => (

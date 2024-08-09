@@ -1,7 +1,8 @@
 "use client";
 
-import FormButton from "@/components/form-button";
+import FormHeader from "@/components/form-header";
 import FormInput from "@/components/form-input";
+import FormButton from "@/components/form-button";
 import { useFormState } from "react-dom";
 import { onSubmit } from "./action";
 
@@ -10,14 +11,11 @@ export default function FormsAndActions() {
 	console.log("state changes into", state);
 	return (
 		<div className="flex flex-col pt-20 px-10">
-			<header className="text-center mb-10">
-				<h1 className="text-3xl font-bold text-white drop-shadow-lg">Zexy Zod</h1>
-				<p className="text-orange-500 font-semibold">by. Nulnu</p>
-			</header>
+			<FormHeader additionalStyle="mb-10" title="Zexy Zod" extraText="by.Nulnu" />
 			<form action={dispatch} className="flex flex-col gap-3">
-				<FormInput name="email" type="email" placeholder="Email" required errors={state?.fieldErrors.email ?? []} />
-				<FormInput name="username" type="text" placeholder="Username" required errors={state?.fieldErrors.username ?? []} />
-				<FormInput name="password" type="password" placeholder="Password" required errors={state?.fieldErrors.password ?? []} />
+				<FormInput name="email" icon="💌" type="email" placeholder="Email" required errors={state?.fieldErrors.email ?? []} />
+				<FormInput name="username" icon="👤" type="text" placeholder="Username" required errors={state?.fieldErrors.username ?? []} />
+				<FormInput name="password" icon="🔑" type="password" placeholder="Password" required errors={state?.fieldErrors.password ?? []} />
 				<FormButton text="Log In" />
 			</form>
 			{state === undefined && (
