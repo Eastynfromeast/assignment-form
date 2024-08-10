@@ -32,6 +32,44 @@ const formSchema = z
 			.min(PW_MIN_LENGTH, `Password should be more than ${PW_MIN_LENGTH} letters`),
 		confirmPassword: z.string().min(PW_MIN_LENGTH),
 	})
+	.superRefine(async ({ username }, ctx) => {
+		const user = await db.user.findUnique({
+			where: {
+				username,
+			},
+			select: {
+				id: true,
+			},
+		});
+		if (user) {
+			ctx.addIssue({
+				code: "custom",
+				path: ["username"],
+				message: "This username is already taken",
+				fatal: true,
+			});
+			return z.NEVER;
+		}
+	})
+	.superRefine(async ({ email }, ctx) => {
+		const user = await db.user.findUnique({
+			where: {
+				email,
+			},
+			select: {
+				id: true,
+			},
+		});
+		if (user) {
+			ctx.addIssue({
+				code: "custom",
+				path: ["email"],
+				message: "This email is already taken",
+				fatal: true,
+			});
+			return z.NEVER;
+		}
+	})
 	.refine(checkPassword, { message: "Both passwords should be the same", path: ["confirmPassword"] });
 
 export async function createAccount(prevState: any, formData: FormData) {
@@ -41,7 +79,7 @@ export async function createAccount(prevState: any, formData: FormData) {
 		password: formData.get("password"),
 		confirmPassword: formData.get("confirmPassword"),
 	};
-	const result = formSchema.safeParse(data);
+	const result = await formSchema.safeParseAsync(data);
 	console.log(result);
 	if (!result.success) {
 		return result.error.flatten();

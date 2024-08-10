@@ -30,7 +30,7 @@ export default function FormInput({ name, errors = [], icon, ...rest }: FormInpu
 				/>
 			</div>
 			{errors?.map((error, index) => (
-				<p key={index} className="text-orange-500 font-medium px-2">
+				<p key={index} className="text-red-500 font-medium px-2">
 					{error}
 				</p>
 			))}
