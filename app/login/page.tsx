@@ -5,16 +5,16 @@ import FormInput from "@/components/form-input";
 import FormButton from "@/components/form-button";
 import { useFormState } from "react-dom";
 import { onSubmit } from "./action";
+import Link from "next/link";
 
 export default function FormsAndActions() {
 	const [state, dispatch] = useFormState(onSubmit, null);
 	console.log("state changes into", state);
 	return (
 		<div className="flex flex-col pt-20 px-10">
-			<FormHeader additionalStyle="mb-10" title="Zexy Zod" extraText="by.Nulnu" />
+			<FormHeader additionalStyle="mb-10" title="Authentication" />
 			<form action={dispatch} className="flex flex-col gap-3">
 				<FormInput name="email" icon="💌" type="email" placeholder="Email" required errors={state?.fieldErrors.email ?? []} />
-				<FormInput name="username" icon="👤" type="text" placeholder="Username" required errors={state?.fieldErrors.username ?? []} />
 				<FormInput name="password" icon="🔑" type="password" placeholder="Password" required errors={state?.fieldErrors.password ?? []} />
 				<FormButton text="Log In" />
 			</form>
@@ -28,6 +28,9 @@ export default function FormsAndActions() {
 					<p>Welcome Back!</p>
 				</div>
 			)}
+			<Link className="mt-5 text-center text-white font-medium hover:underline hover:text-green-500" href="/create-account">
+				No account? JOIN US!
+			</Link>
 		</div>
 	);
 }

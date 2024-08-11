@@ -1,7 +1,23 @@
 "use server";
 
-import { EMAIL_REGEX, NAME_MIN_LENGTH, PW_MIN_LENGTH, PW_REGEX, PW_REGEX_ERROR } from "@/lib/constants";
+import { EMAIL_REGEX, PW_MIN_LENGTH, PW_REGEX, PW_REGEX_ERROR } from "@/lib/constants";
+import db from "@/lib/db";
 import { z } from "zod";
+import bcrypt from "bcrypt";
+import getSession from "@/lib/session";
+import { redirect } from "next/navigation";
+
+const checkEmailExits = async (email: string) => {
+	const user = await db.user.findUnique({
+		where: {
+			email,
+		},
+		select: {
+			id: true,
+		},
+	});
+	return Boolean(user);
+};
 
 const formSchema = z.object({
 	email: z
@@ -10,14 +26,8 @@ const formSchema = z.object({
 		})
 		.email()
 		.trim()
-		.regex(EMAIL_REGEX, "Email must be ended with @zod.com"),
-	username: z
-		.string({
-			required_error: "Username is required",
-		})
-		.min(NAME_MIN_LENGTH, "Username should be at least 5 characters long")
-		.trim()
-		.toLowerCase(),
+		.regex(EMAIL_REGEX, "Email must be ended with @zod.com")
+		.refine(checkEmailExits, "There is no account with the email"),
 	password: z
 		.string({
 			required_error: "Password is required",
@@ -29,15 +39,35 @@ const formSchema = z.object({
 export async function onSubmit(prevState: any, formData: FormData) {
 	const data = {
 		email: formData.get("email"),
-		username: formData.get("username"),
 		password: formData.get("password"),
 	};
-	const result = formSchema.safeParse(data);
-	await new Promise(resolve => setTimeout(resolve, 3000));
-	console.log(result);
+	const result = await formSchema.safeParseAsync(data);
 	if (!result.success) {
 		return result.error.flatten();
 	} else {
-		console.log(result.data);
+		const user = await db.user.findUnique({
+			where: {
+				email: result.data.email,
+			},
+			select: {
+				id: true,
+				password: true,
+			},
+		});
+		const ok = await bcrypt.compare(result.data.password, user!.password ?? "xxxx");
+
+		if (ok) {
+			const session = await getSession();
+			session.id = user!.id;
+			await session.save();
+			redirect("/profile");
+		} else {
+			return {
+				fieldErrors: {
+					email: [],
+					password: ["Wrong password"],
+				},
+			};
+		}
 	}
 }
