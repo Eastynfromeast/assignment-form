@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-export default function FormsAndActions() {
+export default function StartPage() {
 	return (
 		<div className="flex flex-col justify-center items-center min-h-screen px-5">
 			<h1 className="text-white drop-shadow-xl font-bold text-4xl text-center mb-10">Welcome to Nulnu's assignement repository </h1>

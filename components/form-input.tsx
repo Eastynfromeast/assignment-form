@@ -9,7 +9,7 @@ interface FormInputProps {
 export default function FormInput({ name, errors = [], icon, ...rest }: FormInputProps & InputHTMLAttributes<HTMLInputElement>) {
 	return (
 		<div className="flex flex-col gap-2 text-sm">
-			<div className="w-full relative">
+			<div className="w-full relative text-black">
 				<span className="size-4 block absolute top-1/2 -translate-y-1/2 -mt-[2px] left-4 text-gray-400 ">
 					{icon ? (
 						icon
