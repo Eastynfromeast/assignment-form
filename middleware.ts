@@ -9,6 +9,7 @@ const publicOnlyUrls: Routes = {
 	"/login": true,
 	"/sms": true,
 	"/create-account": true,
+	"/start": true,
 };
 
 export async function middleware(request: NextRequest) {
@@ -16,7 +17,7 @@ export async function middleware(request: NextRequest) {
 	const exists = publicOnlyUrls[request.nextUrl.pathname];
 	if (!session.id) {
 		if (!exists) {
-			return NextResponse.redirect(new URL("/login", request.url));
+			return NextResponse.redirect(new URL("/start", request.url));
 		}
 	} else {
 		if (exists) {

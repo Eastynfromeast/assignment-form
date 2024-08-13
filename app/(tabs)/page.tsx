@@ -1,6 +1,5 @@
 import TweetList from "@/components/tweet/tweet-list";
 import db from "@/lib/db";
-import getSession from "@/lib/session";
 import { Prisma } from "@prisma/client";
 
 async function getInitialTweets() {
