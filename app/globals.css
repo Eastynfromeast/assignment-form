@@ -6,6 +6,10 @@
 	* {
 		@apply box-border;
 	}
+
+	body > div {
+		@apply bg-neutral-800 min-h-screen;
+	}
 }
 @layer components {
 	.btn {

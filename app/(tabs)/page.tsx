@@ -1,3 +1,4 @@
+import AddTweet from "@/components/tweet/add-tweet";
 import TweetList from "@/components/tweet/tweet-list";
 import db from "@/lib/db";
 import { Prisma } from "@prisma/client";
@@ -30,6 +31,7 @@ export default async function Home() {
 
 	return (
 		<div className="flex flex-col items-center min-h-screen px-5 pt-6  text-white">
+			<AddTweet />
 			<TweetList initialTweets={initialTweets} />
 		</div>
 	);

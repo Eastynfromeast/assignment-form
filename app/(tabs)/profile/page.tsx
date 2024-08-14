@@ -27,7 +27,7 @@ export default async function Profile() {
 		redirect("/");
 	};
 	return (
-		<div className="flex flex-col mt-20">
+		<div className="flex flex-col pt-20 px-5">
 			<h1 className="text-center text-white">
 				Welcome!
 				<br />
