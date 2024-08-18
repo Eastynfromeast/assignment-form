@@ -1,4 +1,4 @@
-import TweetCommentItem from "@/components/tweet/tweet-comment-item";
+import TweetCommentList from "@/components/tweet/tweet-comment-list";
 import TweetDetailItem from "@/components/tweet/tweet-detail-item";
 import db from "@/lib/db";
 import getSession from "@/lib/session";
@@ -40,6 +40,7 @@ async function getCachedTweet(id: number) {
 }
 
 export type TweetDetail = Prisma.PromiseReturnType<typeof getTweet>;
+export type TweetComment = Prisma.PromiseReturnType<typeof getComments>;
 
 async function getLikeStatus(tweetId: number, userId: number) {
 	const isLiked = await db.like.findUnique({
@@ -84,7 +85,20 @@ async function getComments(tweetId: number) {
 			},
 		},
 	});
-	return comments;
+	const commentsCount = await db.comment.count({
+		where: {
+			tweetId,
+		},
+	});
+	return { comments, commentsCount };
+}
+
+async function getCachedComments(tweetId: number) {
+	const session = await getSession();
+	const cachedOperation = nextCache(getComments, ["tweet-comments"], {
+		tags: [`tweet-comments-${tweetId}`],
+	});
+	return cachedOperation(tweetId);
 }
 
 export default async function TweetDetail({ params }: { params: { id: string } }) {
@@ -97,32 +111,21 @@ export default async function TweetDetail({ params }: { params: { id: string } }
 		return notFound();
 	}
 
-	const comments = await getComments(id);
+	const { comments, commentsCount } = await getCachedComments(id);
 	const { likeCount, isLiked } = await getCachedLikeStatus(id);
-
+	const session = await getSession();
+	const sessionId = session.id;
 	return (
-		<div className="flex flex-col gap-5 px-5 pt-6 *:w-full">
+		<div className="flex flex-col gap-5 px-5 pt-6 pb-10 *:w-full">
 			<TweetDetailItem tweet={tweet} likeCount={likeCount} isLiked={isLiked} />
 			<section className=" border-t-[1px] border-dashed border-neutral-500 mt-10 py-4">
 				<h4 className="font-semibold text-lg">
 					Replies
 					<span className="text-sm inline-block ml-1 ">
-						(<i className="not-italic inline-block px-[2px]">{comments.length}</i>)
+						(<i className="not-italic inline-block px-[2px]">{commentsCount}</i>)
 					</span>
 				</h4>
-				<ul className="flex flex-col gap-5 mt-3">
-					{comments.map(comment => (
-						<TweetCommentItem
-							key={comment.id}
-							id={comment.id}
-							context={comment.payload}
-							created_at={comment.created_at}
-							updated_at={comment.updated_at}
-							user={comment.user}
-						/>
-					))}
-				</ul>
-				{comments.length === 0 && <p className="mt-2"> 표시할 댓글이 존재하지 않습니다.</p>}
+				<TweetCommentList tweetId={id} comments={comments} commentsCount={commentsCount} sessionId={sessionId} />
 			</section>
 		</div>
 	);
